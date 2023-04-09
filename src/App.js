@@ -36,6 +36,7 @@ return (
     />
     <button
     onClick={gettingWeather}
+    className='search'
     >Click</button>
 <div>
 {apiData?.list?.map((item, index) => {
