@@ -28,23 +28,27 @@ console.log(err);
 
 return ( 
   <div className="App">
-    <input 
+    <div className="general-data">
+        <h2>{apiData?.city?.name}</h2>
+      </div>
+<div className='side-box'>
+<input 
     type = "text"
     ref={inputRef}
-    placeholder = "Enter your location"
+    placeholder = "Your location ..."
     className='input-loc'
     />
     <button
     onClick={gettingWeather}
     className='search'
     >Click</button>
-<div>
+
 {apiData?.list?.map((item, index) => {
   if (index % 8 === 0) {
     return (
       <div key={index}>
         {item?.dt_txt}
-        <h2>{item?.main.temp}</h2>
+        <h3>{item?.main.temp}</h3>
       </div>
     );
   } else {
