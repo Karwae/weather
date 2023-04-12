@@ -13,62 +13,87 @@ const api_key = "1746befa30558443451784583d966d81";
 // }, []);
 
 const gettingWeather = async () => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
+const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
 
-  try {
-    const response = await axios.get(url);
-    setApiData(response.data);
-  } catch (err) {
-    console.log(err);
-  }
+try {
+  const response = await axios.get(url);
+  setApiData(response.data);
+  console.log(response.data);
+} catch (err) {
+  console.log(err);
+}
 }
 
 
 useEffect(() => {
-  const raw = localStorage.getItem("locations") || [];
-  setLocation(JSON.parse(raw));
+const raw = localStorage.getItem("locations") || [];
+setLocation(JSON.parse(raw));
 }, []);
 
 useEffect(() => {
-  localStorage.setItem("locations", JSON.stringify(location));
+localStorage.setItem("locations", JSON.stringify(location));
 }, [location]);
 
+/*TIME*/ 
 
+const [currentTime, setCurrentTime] = useState(getFormattedDate());
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentTime(getFormattedDate());
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+
+function getFormattedDate() {
+  const date = new Date();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()];
+  const dayOfMonth = date.getDate();
+  const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${hours}:${minutes} - ${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
+}
 
 
 return ( 
-  <div className="App">
-  <div className='container'>
-    <div className="general-data">
-        <h2>{apiData?.city?.name}</h2>
+<div className="container">
+  <div className="general-data">
+      <h2 className='main-temp'>{Math.floor(apiData?.list[0]?.main.temp)}&deg;</h2>
+      <div className='description'>
+      <h3 className='city'>{apiData?.city?.name}</h3>
+      <h4 className='time'>{currentTime}</h4>
       </div>
+    </div>
 <div className='side-box'>
 <input 
-    type = "text"
-    onChange={event => setLocation(event.target.value)}
-    placeholder = "Your location ..."
-    className ='input-loc'
-    />
-    <button
-    // onClick={gettingWeather}
-    className='search'
-    >Click</button>
+  type = "text"
+  onChange={event => setLocation(event.target.value)}
+  placeholder = "Your location ..."
+  className ='input-loc'
+  />
+  <button
+  onClick={gettingWeather}
+  className='search'
+  >Click</button>
 
 {apiData?.list?.map((item, index) => {
-  if (index % 8 === 0) {
-    return (
-      <div key={index}>
-        {item?.dt_txt}
-        <h3>{item?.main.temp}</h3>
-      </div>
-    );
-  } else {
-    return null;
-  }
+if (index % 8 === 0) {
+  return (
+    <div key={index}>
+      {item?.dt_txt}
+      <h3>{item?.main.temp}</h3>
+    </div>
+  );
+} else {
+  return null;
+}
 })}
 </div>
-  </div>
-  </div>
+</div>
 );
 }
 
