@@ -14,21 +14,25 @@ code {
 
 
 body{
-  background: #1e2737;
+  background: url('../src/img/background-body.png');
+  background-size: cover;
+  background-repeat: repeat;
 }
 
-.App{
-  background: url('../src/assets/nitish-meena-RbbdzZBKRDY-unsplash.jpg');
+.container{
+  background: url('../src/img/BG.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-blend-mode: multiply;
-  width: 950px;
+  width: 100%;
+  max-width: 950px;
   height: 550px;
   border-radius: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  margin: 20px;
+  margin-right: 20px;
 }
 
 .side-box{
@@ -38,6 +42,19 @@ body{
   position: absolute;
   top: 0px;
   right: 0px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(35, 35, 58, 0.3);
+ 
 
+}
+
+input{
+  background: transparent;
+  color: rgba(255, 255, 255, 0.564);
+  border: none;
+  outline: none;
+}
+
+input:focus{
+  border: none;
+  box-shadow: none;
 }

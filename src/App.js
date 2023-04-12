@@ -1,45 +1,56 @@
 import './App.css';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
 
 function App() {
 
-const inputRef = useRef(null);
+const [location, setLocation] = useState("London");
 const [apiData, setApiData] = useState(null);
+const api_key = "1746befa30558443451784583d966d81";
 
-const api_key = "df3886c4ae0b164958dcf4fd38b1575b";
+// useEffect(() => { 
+//     gettingWeather();
+// }, []);
 
-const gettingWeather= async () =>{
+const gettingWeather = async () => {
+  const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
 
-const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${inputRef.current.value}&cnt=60&units=metric&appid=${api_key}`; 
-fetch(url)
-.then((res) => res.json())
-.then((data) => {
-  // setApiData(null);
-  console.log(data);
-  setApiData(data);
-})
-.catch((err) =>{
-console.log(err);
-});
-
+  try {
+    const response = await axios.get(url);
+    setApiData(response.data);
+  } catch (err) {
+    console.log(err);
+  }
 }
+
+
+useEffect(() => {
+  const raw = localStorage.getItem("locations") || [];
+  setLocation(JSON.parse(raw));
+}, []);
+
+useEffect(() => {
+  localStorage.setItem("locations", JSON.stringify(location));
+}, [location]);
+
+
 
 
 return ( 
   <div className="App">
+  <div className='container'>
     <div className="general-data">
         <h2>{apiData?.city?.name}</h2>
       </div>
 <div className='side-box'>
 <input 
     type = "text"
-    ref={inputRef}
+    onChange={event => setLocation(event.target.value)}
     placeholder = "Your location ..."
-    className='input-loc'
+    className ='input-loc'
     />
     <button
-    onClick={gettingWeather}
+    // onClick={gettingWeather}
     className='search'
     >Click</button>
 
@@ -56,6 +67,7 @@ return (
   }
 })}
 </div>
+  </div>
   </div>
 );
 }
