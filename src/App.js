@@ -24,41 +24,17 @@ try {
 }
 }
 
+ const weatherIcon = (a) => {
+  switch(a) {
 
-const WeatherTypes = [
-  {
-    type: "Clear",
-    img: "https://cdn-icons-png.flaticon.com/512/6974/6974833.png",
-  },
-  {
-    type: "Rain",
-    img: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
-  },
-  {
-    type: "Snow",
-    img: "https://cdn-icons-png.flaticon.com/512/642/642102.png",
-  },
-  {
-    type: "Clouds",
-    img: "https://cdn-icons-png.flaticon.com/512/414/414825.png",
-  },
-  {
-    type: "Haze",
-    img: "https://cdn-icons-png.flaticon.com/512/1197/1197102.png",
-  },
-  {
-    type: "Smoke",
-    img: "https://cdn-icons-png.flaticon.com/512/4380/4380458.png",
-  },
-  {
-    type: "Mist",
-    img: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png",
-  },
-  {
-    type: "Drizzle",
-    img: "https://cdn-icons-png.flaticon.com/512/3076/3076129.png",
-  },
-];
+    case "Clouds": return <img src={require("./img/Clouds.png")} alt="" className="image-weather"/>;
+    case "Snow": return <img src={require("./img/Snow.png")} alt="" className="image-weather"/>;
+    case "Clear": return <img src={require("./img/Clear.png")} alt="" className="image-weather"/>;
+    case "Rain": return <img src={require("./img/Rain.png")} alt="" className="image-weather"/>;
+
+    default: return <h1>404</h1>
+  }
+}
 
 
 useEffect(() => {
@@ -103,6 +79,10 @@ return (
       <h3 className='city'>{apiData?.city?.name}</h3>
       <h4 className='time'>{currentTime}</h4>
       </div>
+      <div className='weather-image-city'>
+      {apiData?.list ? weatherIcon(apiData?.list[0].weather[0].main) : null}
+      <h4 className='sub-image'>{apiData?.list[0]?.weather[0]?.main}</h4>
+      </div>
     </div>
 <div className='side-box'>
 <input 
@@ -116,10 +96,10 @@ return (
   className='search'
   >Click</button>
 
-{apiData?.list?.map((item, index) => {
+{/* {apiData?.list?.map((item, index) => {
 if (index % 8 === 0) {
-  return (
-    <div key={index}>
+  return ( */}
+    {/* <div key={index}>
       {item?.dt_txt}
       <h3>{item?.main?.temp}</h3>
       <h3>{item?.main?.humidity}</h3>
@@ -128,12 +108,41 @@ if (index % 8 === 0) {
       <h3>{item?.main?.feels_like}</h3>
       <h3>{item?.wind?.speed}</h3>
       <h3>{item?.weather[0].main}</h3>
-    </div>
-  );
+    </div> */}
+  {/* );
 } else {
   return null;
 }
-})}
+})} */}
+
+<div>
+      {apiData?.list[0]?.dt_txt}
+      <div className='temp list-item'>
+      <p>Temp</p>
+      <p>{apiData?.list[0]?.main?.temp}</p>
+      </div>
+      <div className='humidity list-item'>
+      <p>Humidity</p>
+      <p>{apiData?.list[0]?.main?.humidity}</p>
+      </div>
+      <div className='max-temp list-item'>
+      <p>Max Temp</p>
+      <p>{apiData?.list[0]?.main?.temp_max}</p>
+      </div>
+      <div className='min-temp list-item'>
+      <p>Min Temp</p>
+      <p>{apiData?.list[0]?.main?.temp_min}</p>
+      </div>
+      <div className='feels-weather list-item'>
+      <p>Weather Feels</p>
+      <p>{apiData?.list[0]?.main?.feels_like}</p>
+      </div>
+      <div className='wind-item list-item'>
+      <p>Wind</p>
+      <p>{apiData?.list[0]?.wind?.speed}</p>
+      </div>
+    </div>
+
 </div>
 </div>
 );

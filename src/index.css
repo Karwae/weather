@@ -2,7 +2,7 @@
   outline: 0 !important;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6, p{
   padding: 0px;
   margin: 0px;
 }
@@ -68,13 +68,26 @@ input:focus{
 }
 
 .main-temp{
-  font-size: 64px;
+  font-size: 72px;
 }
 
 .city{
   font-size: 32px;
+  margin-bottom: 5px;
 }
 
-.time{
+.time, .sub-image{
   font-size: 13px;
+}
+
+.weather-image-city{
+  margin-left: 15px;
+  text-align: center;
+}
+
+.image-weather{
+  width: 45px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: -5px;
 }
