@@ -23,7 +23,6 @@ body{
   color: #fff;
 }
 
-
 .container{
   background: url('../src/img/BG.jpg');
   background-size: cover;
@@ -38,13 +37,13 @@ body{
   position: relative;
 }
 
-
 .side-box{
   backdrop-filter: blur(5px);
   width: 360px;
   height: 100%;
   background: rgba(35, 35, 58, 0.3);
   margin-left: auto;
+  overflow-y: auto;
 }
 
 .general-data{

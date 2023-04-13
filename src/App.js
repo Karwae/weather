@@ -25,6 +25,42 @@ try {
 }
 
 
+const WeatherTypes = [
+  {
+    type: "Clear",
+    img: "https://cdn-icons-png.flaticon.com/512/6974/6974833.png",
+  },
+  {
+    type: "Rain",
+    img: "https://cdn-icons-png.flaticon.com/512/3351/3351979.png",
+  },
+  {
+    type: "Snow",
+    img: "https://cdn-icons-png.flaticon.com/512/642/642102.png",
+  },
+  {
+    type: "Clouds",
+    img: "https://cdn-icons-png.flaticon.com/512/414/414825.png",
+  },
+  {
+    type: "Haze",
+    img: "https://cdn-icons-png.flaticon.com/512/1197/1197102.png",
+  },
+  {
+    type: "Smoke",
+    img: "https://cdn-icons-png.flaticon.com/512/4380/4380458.png",
+  },
+  {
+    type: "Mist",
+    img: "https://cdn-icons-png.flaticon.com/512/4005/4005901.png",
+  },
+  {
+    type: "Drizzle",
+    img: "https://cdn-icons-png.flaticon.com/512/3076/3076129.png",
+  },
+];
+
+
 useEffect(() => {
 const raw = localStorage.getItem("locations") || [];
 setLocation(JSON.parse(raw));
@@ -85,7 +121,13 @@ if (index % 8 === 0) {
   return (
     <div key={index}>
       {item?.dt_txt}
-      <h3>{item?.main.temp}</h3>
+      <h3>{item?.main?.temp}</h3>
+      <h3>{item?.main?.humidity}</h3>
+      <h3>{item?.main?.temp_max}</h3>
+      <h3>{item?.main?.temp_min}</h3>
+      <h3>{item?.main?.feels_like}</h3>
+      <h3>{item?.wind?.speed}</h3>
+      <h3>{item?.weather[0].main}</h3>
     </div>
   );
 } else {
