@@ -4,7 +4,8 @@ import axios from 'axios';
 
 function App() {
 
-const [location, setLocation] = useState("London");
+const [location, setLocation] = useState("");
+const [city, setCity] = useState("");
 const [apiData, setApiData] = useState(null);
 const api_key = "1746befa30558443451784583d966d81";
 
@@ -42,13 +43,22 @@ try {
 }
 
 useEffect(() => {
-const raw = localStorage.getItem("locations") || [];
-setLocation(JSON.parse(raw));
-}, []);
-
-useEffect(() => {
-localStorage.setItem("locations", JSON.stringify(location));
+  if (location === "") {
+    setLocation("London");
+  } else {
+    gettingWeather();
+  }
 }, [location]);
+
+// useEffect(() => {
+//   if (location === "") {
+//     const storedLocation = localStorage.getItem('location');
+//     setLocation(storedLocation || "London");
+//   } else {
+//     localStorage.setItem('location', location);
+//   }
+// }, [location]);
+
 
 /*TIME*/ 
 
@@ -93,17 +103,19 @@ return (
       </div>
     </div>
 <div className='side-box'>
+<div className='search'>
 <input 
   type = "text"
-  onChange={event => setLocation(event.target.value)}
-  placeholder = "Your location ..."
+  onChange = {event => setLocation(event.target.value)}
+  placeholder = "Your location"
   className ='input-loc'
   />
-  <button
-  onClick={gettingWeather}
-  className='search'
-  >Click</button>
+  <button onClick={gettingWeather} className='search-button' >
+  <img src={require("./img/search.png")} alt="" className="panel-image"/>
+  </button>
 
+
+</div>
 
 
 {/* {apiData?.list?.map((item, index) => {
@@ -133,7 +145,7 @@ return (
       {/* <p>{timestamp}</p> */}
       <h2 className='details-title'>Weather Details</h2>
       <div className='temp list-item'>
-      <p>Temp</p>
+      <p>Temperature</p>
       <p>{Math.floor(apiData?.list[0]?.main?.temp)}&deg;</p>
       </div>
       <div className='humidity list-item'>
@@ -167,7 +179,7 @@ return (
       <div className='panel-item' key={index}>
         <div className='panel-time'>{item?.dt_txt.slice(11, 16)}</div>
         {weatherIcon(item?.weather[0].main)}
-        <div className='panel-temp'>{Math.floor(apiData?.list[0]?.main.temp)}
+        <div className='panel-temp'>{Math.floor(item?.main?.temp)}
         <img src={require("./img/thermometer-half.png")} alt="" className="panel-image"/>
         </div>
       </div> 
