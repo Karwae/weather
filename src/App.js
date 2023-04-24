@@ -8,8 +8,8 @@ const [location, setLocation] = useState('');
 const [apiData, setApiData] = useState(null);
 const api_key = "1746befa30558443451784583d966d81";
 
-const gettingWeather = async () => {
-const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
+const gettingWeather = React.useCallback( async () => {
+  const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
 
 try {
   const response = await axios.get(url);
@@ -18,7 +18,7 @@ try {
 } catch (err) {
   console.log(err);
 }
-}
+},[location])
 
  const weatherIcon = (a) => {
   switch(a) {
@@ -37,35 +37,29 @@ try {
   }
 }
 
-/*------------------------------------------------------------------------*/
+/*Local Storage*/ 
 
 useEffect(() => {
-  // const storedLocation = localStorage.getItem('location');
-  // if (storedLocation) {
-  //   setLocation(storedLocation);
-  //   console.log(storedLocation);
-  //   gettingWeather();
-  // } else {
-   
-  //   localStorage.setItem('location', 'London');
-  //   gettingWeather();
-  // }
-  setLocation('London');
-  console.log('hello');
-  
+  const storedLocation = localStorage.getItem('location');
+  if (storedLocation) {
+    setLocation(storedLocation);
+  } else {
+    setLocation('London');
+  }
 }, [])
-
 
 useEffect(() => {
   const timer = setTimeout(() => {
-    
     gettingWeather();
-    console.log(location);
   }, 1000);
-  return () => clearTimeout(timer); // Clear the timer on unmount
-}, []);
+  return () => clearTimeout(timer); 
+}, [gettingWeather]);
 
-/*------------------------------------------------------------------------*/
+
+useEffect(() => {
+  localStorage.setItem('location', location);
+}, [location])
+
 
 /*TIME*/ 
 
