@@ -1,17 +1,12 @@
 import './App.css';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
 function App() {
 
-const [location, setLocation] = useState("");
-const [city, setCity] = useState("");
+const [location, setLocation] = useState('');
 const [apiData, setApiData] = useState(null);
 const api_key = "1746befa30558443451784583d966d81";
-
-// useEffect(() => { 
-//     gettingWeather();
-// }, []);
 
 const gettingWeather = async () => {
 const url = `https://api.openweathermap.org/data/2.5/forecast/?q=${location}&cnt=60&units=metric&appid=${api_key}`; 
@@ -42,23 +37,35 @@ try {
   }
 }
 
+/*------------------------------------------------------------------------*/
+
 useEffect(() => {
-  if (location === "") {
-    setLocation("London");
-  } else {
+  // const storedLocation = localStorage.getItem('location');
+  // if (storedLocation) {
+  //   setLocation(storedLocation);
+  //   console.log(storedLocation);
+  //   gettingWeather();
+  // } else {
+   
+  //   localStorage.setItem('location', 'London');
+  //   gettingWeather();
+  // }
+  setLocation('London');
+  console.log('hello');
+  
+}, [])
+
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    
     gettingWeather();
-  }
-}, [location]);
+    console.log(location);
+  }, 1000);
+  return () => clearTimeout(timer); // Clear the timer on unmount
+}, []);
 
-// useEffect(() => {
-//   if (location === "") {
-//     const storedLocation = localStorage.getItem('location');
-//     setLocation(storedLocation || "London");
-//   } else {
-//     localStorage.setItem('location', location);
-//   }
-// }, [location]);
-
+/*------------------------------------------------------------------------*/
 
 /*TIME*/ 
 
@@ -110,7 +117,7 @@ return (
   placeholder = "Your location"
   className ='input-loc'
   />
-  <button onClick={gettingWeather} className='search-button' >
+  <button onClick={ gettingWeather} className='search-button' >
   <img src={require("./img/search.png")} alt="" className="panel-image"/>
   </button>
 
@@ -163,6 +170,10 @@ return (
       <div className='feels-weather list-item'>
       <p>Weather Feels</p>
       <p>{Math.floor(apiData?.list[0]?.main?.feels_like)}&deg;</p>
+      </div>
+      <div className='pressure list-item'>
+      <p>Pressure</p>
+      <p>{Math.floor(apiData?.list[0]?.main?.pressure)}</p>
       </div>
       <div className='wind-item list-item'>
       <p>Wind</p>

@@ -248,4 +248,17 @@ input:focus{
     width: 350px;
   } 
 
+  .main-temp{
+    font-size: 64px;
+  }
+  
+  .city{
+    font-size: 24px;
+  }
+  
+  .time, .sub-image{
+    font-size: 10px;
+  }
+
+
 }
