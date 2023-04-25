@@ -90,6 +90,22 @@ endOfToday.setHours(23, 59, 59, 999);
 const timestamp = endOfToday.getTime();
 
 
+
+/* Timestamp */
+
+const handleTimestamps = () => {
+  const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+  const currentDate = new Date(); // current date
+  const timestampsArr = [];
+
+  for (let i = 0; i < 7; i++) {
+    const nextDate = new Date(currentDate.getTime() + ((i + 1) * oneDay));
+    timestampsArr.push(nextDate.getTime());
+  }
+  console.log(timestampsArr);
+  
+}
+
 return ( 
 <div className="container">
   <div className="general-data">
@@ -118,7 +134,7 @@ return (
 
 </div>
 
-
+{/* <button onClick={handleTimestamps}>Get timestamps for next 7 days</button> */}
 {/* {apiData?.list?.map((item, index) => {
   const itemDate = new Date(item?.dt_txt);
   const itemTimestamp = itemDate.getTime();
