@@ -43,14 +43,13 @@ useEffect(() => {
   const storedLocation = localStorage.getItem('location');
   if (storedLocation) {
     setLocation(storedLocation);
-  } else {
-    setLocation('London');
   }
 }, [])
 
 useEffect(() => {
   const timer = setTimeout(() => {
     gettingWeather();
+    
   }, 1000);
   return () => clearTimeout(timer); 
 }, [gettingWeather]);
@@ -90,22 +89,6 @@ endOfToday.setHours(23, 59, 59, 999);
 const timestamp = endOfToday.getTime();
 
 
-
-/* Timestamp */
-
-const handleTimestamps = () => {
-  const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
-  const currentDate = new Date(); // current date
-  const timestampsArr = [];
-
-  for (let i = 0; i < 7; i++) {
-    const nextDate = new Date(currentDate.getTime() + ((i + 1) * oneDay));
-    timestampsArr.push(nextDate.getTime());
-  }
-  console.log(timestampsArr);
-  
-}
-
 return ( 
 <div className="container">
   <div className="general-data">
@@ -135,31 +118,9 @@ return (
 </div>
 
 {/* <button onClick={handleTimestamps}>Get timestamps for next 7 days</button> */}
-{/* {apiData?.list?.map((item, index) => {
-  const itemDate = new Date(item?.dt_txt);
-  const itemTimestamp = itemDate.getTime();
-  const endOfDayTimestamp = new Date(itemDate.getFullYear(), itemDate.getMonth(), itemDate.getDate(), 23, 59, 59).getTime();
 
-
-
-
-  if (itemTimestamp < endOfDayTimestamp && itemTimestamp >= Date.now()) {
-    return ( 
-      <div className='panel-weather' key={index}>
-        
-        {weatherIcon(item?.weather[0].main)}
-        <p>{item?.dt_txt.slice(11, 16)}</p>
-        <h3>{Math.floor(apiData?.list[0]?.main.temp)}&deg;</h3>
-      </div> 
-    );
-  } else {
-    return null;
-  }
-})} */}
-{/* <h2>{itemDate.toLocaleDateString()}</h2> */}
 <div className='data-weather'>
       {/* {apiData?.list[0]?.dt_txt.slice(11, 16)} */}
-      {/* <p>{timestamp}</p> */}
       <h2 className='details-title'>Weather Details</h2>
       <div className='temp list-item'>
       <p>Temperature</p>
@@ -169,14 +130,6 @@ return (
       <p>Humidity</p>
       <p>{Math.floor(apiData?.list[0]?.main?.humidity)}%</p>
       </div>
-      {/* <div className='max-temp list-item'>
-      <p>Max Temp</p>
-      <p>{Math.floor(apiData?.list[0]?.main?.temp_max)}&deg;</p>
-      </div>
-      <div className='min-temp list-item'>
-      <p>Min Temp</p>
-      <p>{Math.floor(apiData?.list[0]?.main?.temp_min)}&deg;</p>
-      </div> */}
       <div className='feels-weather list-item'>
       <p>Weather Feels</p>
       <p>{Math.floor(apiData?.list[0]?.main?.feels_like)}&deg;</p>
@@ -210,7 +163,26 @@ return (
   }
 })}
 </div>
-
+{apiData?.list?.map((item, index) => {
+  const timeInMs = Date.parse(item?.dt_txt);
+  const isEighthPanel = (index + 1) % 8 === 0;
+  const panelsWeather = isEighthPanel && "<div className='panels-weather'>";
+  
+  if (timestamp < timeInMs) {
+    return (
+        <div className='panel-item' key={index}>
+          <div className='panel-time'>{item?.dt_txt.slice(11, 16)}</div>
+          {weatherIcon(item?.weather[0].main)}
+          <div className='panel-temp'>
+            {Math.floor(item?.main?.temp)}
+            <img src={require('./img/thermometer-half.png')} alt='' className='panel-image' />
+       </div>
+      </div>
+    );
+  } else {
+    return null;
+  }
+})}
 </div>
 </div>
 );
