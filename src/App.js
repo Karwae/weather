@@ -14,7 +14,6 @@ const gettingWeather = React.useCallback( async () => {
 try {
   const response = await axios.get(url);
   setApiData(response.data);
-  console.log(response.data);
 } catch (err) {
   console.log(err);
 }
@@ -87,7 +86,9 @@ function getFormattedDate() {
 const endOfToday = new Date();
 endOfToday.setHours(23, 59, 59, 999);
 const timestamp = endOfToday.getTime();
-
+const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+var panels_weather  = document.createElement("div");
+panels_weather.classList.add("panels-weather");
 
 return ( 
 <div className="container">
@@ -117,10 +118,7 @@ return (
 
 </div>
 
-{/* <button onClick={handleTimestamps}>Get timestamps for next 7 days</button> */}
-
 <div className='data-weather'>
-      {/* {apiData?.list[0]?.dt_txt.slice(11, 16)} */}
       <h2 className='details-title'>Weather Details</h2>
       <div className='temp list-item'>
       <p>Temperature</p>
@@ -163,14 +161,18 @@ return (
   }
 })}
 </div>
+<div className='panels-weather'>
 {apiData?.list?.map((item, index) => {
   const timeInMs = Date.parse(item?.dt_txt);
-  const isEighthPanel = (index + 1) % 8 === 0;
-  const panelsWeather = isEighthPanel && "<div className='panels-weather'>";
-  
+  const date = new Date(item?.dt_txt.slice(0, 10));
+  const dayOfWeek = date.getDay();
+  const dayOfWeekName = daysOfWeek[dayOfWeek];
+  const matchingIndex = apiData?.list?.findIndex((item) => Date.parse(item?.dt_txt) > timestamp);
   if (timestamp < timeInMs) {
     return (
-        <div className='panel-item' key={index}>
+      <React.Fragment key={index}>
+      {(index > matchingIndex && index % 8 === matchingIndex || index % 8 === matchingIndex) && <div className='panel_date'>{dayOfWeekName}, {item?.dt_txt.slice(0, 10)} </div>}
+        <div className='panel-item'>
           <div className='panel-time'>{item?.dt_txt.slice(11, 16)}</div>
           {weatherIcon(item?.weather[0].main)}
           <div className='panel-temp'>
@@ -178,11 +180,13 @@ return (
             <img src={require('./img/thermometer-half.png')} alt='' className='panel-image' />
        </div>
       </div>
+      </React.Fragment>
     );
   } else {
     return null;
   }
 })}
+</div>
 </div>
 </div>
 );
