@@ -181,6 +181,15 @@ input:focus{
   margin-bottom: 25px;
 }
 
+.panel_date{
+  margin: 20px 0 20px 0;
+  width: 100%;
+}
+
+.panel_date:first-child{
+  margin-top: 40px;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -217,6 +226,10 @@ input:focus{
 
   .panel-item{
     width: 31%;
+  }
+
+  .panel_date{
+    text-align: center;
   }
 
 }
